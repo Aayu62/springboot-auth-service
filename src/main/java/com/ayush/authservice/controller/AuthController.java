@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ayush.authservice.dto.RegisterRequest;
 import com.ayush.authservice.service.AuthService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -14,7 +15,7 @@ public class AuthController {
     private AuthService authservice;
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody RegisterRequest request){
+    public String registerUser(@Valid @RequestBody RegisterRequest request){
 
         return authservice.register(request);
 

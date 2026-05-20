@@ -8,8 +8,13 @@ import com.ayush.authservice.exception.EmailAlreadyExistsException;
 import com.ayush.authservice.dto.RegisterRequest;
 import com.ayush.authservice.repository.UserRepository;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Service
 public class AuthService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository userRepository;
@@ -24,7 +29,7 @@ public class AuthService {
         User user = new User(
             request.getName(),
             request.getEmail(),
-            request.getPassword()
+            passwordEncoder.encode(request.getPassword())
         );
 
         userRepository.save(user);

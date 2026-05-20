@@ -12,7 +12,8 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidationExceptions (MethodArgumentNotValidException ex){
+    public Map<String, String> handleValidationExceptions (
+        MethodArgumentNotValidException ex){
 
         Map<String, String> errors = new HashMap<>();
 
@@ -25,5 +26,16 @@ public class GlobalExceptionHandler {
 
         return errors;
 
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Map<String, String> handleEmailAlreadyExistsException(
+        EmailAlreadyExistsException ex) {
+
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+
+        return error;
     }
 }

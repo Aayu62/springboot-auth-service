@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ayush.authservice.entity.User;
+import com.ayush.authservice.exception.EmailAlreadyExistsException;
 import com.ayush.authservice.dto.RegisterRequest;
 import com.ayush.authservice.repository.UserRepository;
 
@@ -16,7 +17,8 @@ public class AuthService {
     public String register(RegisterRequest request){
 
         if(userRepository.existsByEmail(request.getEmail())) {
-            return "Email already registered!";
+            throw new EmailAlreadyExistsException(
+                "Email already registered!");
         }
 
         User user = new User(

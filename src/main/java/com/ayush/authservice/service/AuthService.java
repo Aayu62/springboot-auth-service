@@ -15,6 +15,10 @@ public class AuthService {
     
     public String register(RegisterRequest request){
 
+        if(userRepository.existsByEmail(request.getEmail())) {
+            return "Email already registered!";
+        }
+
         User user = new User(
             request.getName(),
             request.getEmail(),

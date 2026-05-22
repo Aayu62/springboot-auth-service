@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.ayush.authservice.dto.RegisterRequest;
+import com.ayush.authservice.dto.LoginRequest;
 import com.ayush.authservice.service.AuthService;
 import jakarta.validation.Valid;
 
@@ -18,6 +19,13 @@ public class AuthController {
     public String registerUser(@Valid @RequestBody RegisterRequest request){
 
         return authservice.register(request);
+
+    }
+
+    @PostMapping("/login")
+    public String loginUser(@Valid @RequestBody LoginRequest request){
+        
+        return authservice.login(request);
 
     }
 }

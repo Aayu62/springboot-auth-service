@@ -28,6 +28,18 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(InvalidCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Map<String, String> handleInvalidCredentialsException(
+        InvalidCredentialsException ex) {
+            
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+            
+        return error;
+
+    }
+
     @ExceptionHandler(EmailAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, String> handleEmailAlreadyExistsException(

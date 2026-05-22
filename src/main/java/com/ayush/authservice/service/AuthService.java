@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 
 import com.ayush.authservice.entity.User;
 import com.ayush.authservice.exception.EmailAlreadyExistsException;
+import com.ayush.authservice.exception.InvalidCredentialsException;
 import com.ayush.authservice.dto.RegisterRequest;
+import com.ayush.authservice.dto.LoginRequest;
 import com.ayush.authservice.repository.UserRepository;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,5 +38,21 @@ public class AuthService {
 
         return "User Registered Successfully";
 
+    }
+
+    public String login(LoginRequest request){
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> 
+                        new InvalidCredentialsException("Invalid Email or Password"));
+
+        boolean passwordMatches = passwordEncoder.matches(
+                request.getPassword(), 
+                user.getPassword());
+
+        if(!passwordMatches){
+            throw new InvalidCredentialsException("Incorrect Email or Password");
+        }
+        
+        return "Login Successful";
     }
 }

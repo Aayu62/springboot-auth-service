@@ -8,6 +8,7 @@ import com.ayush.authservice.exception.EmailAlreadyExistsException;
 import com.ayush.authservice.exception.InvalidCredentialsException;
 import com.ayush.authservice.dto.RegisterRequest;
 import com.ayush.authservice.dto.LoginRequest;
+import com.ayush.authservice.dto.LoginResponse;
 import com.ayush.authservice.repository.UserRepository;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +21,11 @@ public class AuthService {
 
     @Autowired
     private UserRepository userRepository;
-    
+
+    @Autowired
+    private JwtService jwtService;
+
+
     public String register(RegisterRequest request){
 
         if(userRepository.existsByEmail(request.getEmail())) {
@@ -40,7 +45,7 @@ public class AuthService {
 
     }
 
-    public String login(LoginRequest request){
+    public LoginResponse login(LoginRequest request){
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> 
                         new InvalidCredentialsException("Invalid Email or Password"));
@@ -52,7 +57,9 @@ public class AuthService {
         if(!passwordMatches){
             throw new InvalidCredentialsException("Incorrect Email or Password");
         }
-        
-        return "Login Successful";
+
+        String token = jwtService.generateToken(user.getEmail());
+                
+        return new LoginResponse(token);
     }
 }

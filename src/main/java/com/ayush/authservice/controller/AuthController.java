@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ayush.authservice.dto.RegisterRequest;
 import com.ayush.authservice.dto.LoginRequest;
+import com.ayush.authservice.dto.LoginResponse;
 import com.ayush.authservice.service.AuthService;
 import jakarta.validation.Valid;
 
@@ -23,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@Valid @RequestBody LoginRequest request){
+    public LoginResponse loginUser(@Valid @RequestBody LoginRequest request){
         
         return authservice.login(request);
 
